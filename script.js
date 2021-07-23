@@ -172,8 +172,8 @@ function conway(array_start, array_next) {
     // Need to set up new array to receive updated states
     //var nextConwayArray = createArray()
 
-    for (var row=1; row < rowSize-1; row++) {
-        for (var column=1; column < colSize-1; column++) { //NOTE. start from 1 and end at -1 to avoid edge problems
+    for (var row=0; row < rowSize; row++) {
+        for (var column=0; column < colSize; column++) { //NOTE. start from 1 and end at -1 to avoid edge problems
             var neighbors = calculateNeighbors(array_start, row, column)
             // console.log(neighbors)
             if (array_start[row][column] == 1){
@@ -199,9 +199,52 @@ function renderConway() {
 }
 
 function calculateNeighbors(array, row, column){
-    var neighbors = array[row-1][column-1] + array[row-1][column] + array[row-1][column+1] +
-                    array[row][column-1]                         + array[row][column+1] + 
-                    array[row+1][column-1] + array[row+1][column] + array[row+1][column+1]
+    var neighbors=0
+    if ((row >= 1 && row < rowSize-1) && (column >= 1 && column < colSize-1)) {
+        neighbors = array[row-1][column-1] + array[row-1][column] + array[row-1][column+1] +
+                        array[row][column-1]                         + array[row][column+1] + 
+                        array[row+1][column-1] + array[row+1][column] + array[row+1][column+1]
+        }
+    else if (row==0 && (column >= 1 && column < colSize-1)) {
+        neighbors = array[rowSize-1][column-1] + array[rowSize-1][column] + array[rowSize-1][column+1] +
+                        array[row][column-1]                         + array[row][column+1] + 
+                        array[row+1][column-1] + array[row+1][column] + array[row+1][column+1]
+    }
+    else if (row==(rowSize-1) && (column >= 1 && column < colSize-1)) {
+        neighbors = array[row-1][column-1] + array[row-1][column] + array[row-1][column+1] +
+                        array[row][column-1]                         + array[row][column+1] + 
+                        array[0][column-1] + array[0][column] + array[0][column+1]
+    }
+    else if ((row >= 1 && row < rowSize-1) && (column==0)) {
+        neighbors = array[row-1][colSize-1] + array[row-1][column] + array[row-1][column+1] +
+                    array[row][colSize-1]                         + array[row][column+1] + 
+                    array[row+1][colSize-1] + array[row+1][column] + array[row+1][column+1]
+    }
+    else if ((row >= 1 && row < rowSize-1) && (column==colSize-1)) {
+        neighbors = array[row-1][column-1] + array[row-1][column] + array[row-1][0] +
+                    array[row][column-1]                         + array[row][0] + 
+                    array[row+1][column-1] + array[row+1][column] + array[row+1][0]
+    }
+    else if (row==0 && column==0) {
+        neighbors = array[rowSize-1][colSize-1] + array[rowSize-1][column] + array[rowSize-1][column+1] +
+                    array[row][colSize-1]                         + array[row][column+1] + 
+                    array[row+1][colSize-1] + array[row+1][column] + array[row+1][column+1]
+    }
+    else if (row==rowSize-1 && column==colSize-1) {
+        neighbors = array[row-1][column-1] + array[row-1][column] + array[row-1][0] +
+                    array[row][column-1]                         + array[row][0] + 
+                    array[0][column-1] + array[0][column] + array[0][0]
+    }
+    else if (row==rowSize-1 && column==0) {
+        neighbors = array[row-1][colSize-1] + array[row-1][column] + array[row-1][column+1] +
+                    array[row][colSize-1]                         + array[row][column+1] + 
+                    array[0][colSize-1] + array[0][0] + array[0][column+1]
+    }
+    else if (row==0 && column==colSize-1) {
+        neighbors = array[rowSize-1][column-1] + array[rowSize-1][column] + array[rowSize-1][0] +
+                    array[row][column-1]                         + array[0][0] + 
+                    array[row+1][column-1] + array[row+1][column] + array[row+1][0]
+    }
     return neighbors
 }
 
