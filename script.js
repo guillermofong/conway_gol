@@ -46,6 +46,26 @@ var canvas = document.getElementById("myCanvas")
 var ctx = canvas.getContext("2d")
 canvas.addEventListener('click', clickEvent)
 
+function axisY() {
+    ctx.lineWidth = 1
+    ctx.strokeStyle = 'gray'
+    for (var col=0; col<colSize; col++){
+        ctx.moveTo(col*cellSize,0)
+        ctx.lineTo(col*cellSize, colSize*cellSize)
+        ctx.stroke()
+    }
+}
+
+function axisX() {
+    ctx.lineWidth = 1
+    ctx.strokeStyle = 'gray'
+    for (var row=0; row<rowSize; row++){
+        ctx.moveTo(0,row*cellSize)
+        ctx.lineTo(rowSize*cellSize, row*cellSize)
+        ctx.stroke()
+    }
+}
+
 
 // function drawGrid() {
 //     ctx.lineWidth = 1
@@ -69,7 +89,7 @@ canvas.addEventListener('click', clickEvent)
 
 function drawGrid(array) {
     ctx.lineWidth = 1
-    ctx.strokeStyle = 'black'
+    // ctx.strokeStyle = 'black'
     for (var row=0; row < rowSize; row++) {
         for (var column=0; column < colSize; column++) {
             var y = row*cellSize
@@ -78,7 +98,7 @@ function drawGrid(array) {
                 ctx.fillStyle = "white"
             }
             else {
-                ctx.fillStyle = "black"
+                ctx.fillStyle = "crimson"
             }
             ctx.fillRect(x+2.5,y+2.5, cellSize-5, cellSize-5)
             // ctx.rect(x,y,cellSize, cellSize)
@@ -97,7 +117,7 @@ function clickEvent(event) {
 
     if (conwayArray[y/cellSize][x/cellSize] == 0) {
         conwayArray[y/cellSize][x/cellSize] = 1
-        ctx.fillStyle = "black"
+        ctx.fillStyle = "crimson"
     }
     else {
         conwayArray[y/cellSize][x/cellSize] = 0
@@ -195,10 +215,40 @@ function run() {
 }
 
 drawGrid(conwayArray)
-
-
+axisY()
+axisX()
 // setInterval(function() {
 //     renderConway()
 //     drawGrid(conwayArray)
 // }, 1000)
 
+
+function flatten(myArray) {
+    returnArray = []
+    for (var i=0; i < myArray.length; i++) {
+        for (var j=0; j < myArray[i].length; j++) {
+            returnArray.push(myArray[i][j])
+        }
+    }
+    return returnArray
+}
+
+function compact(myArray) {
+    returnArray = []
+    for (var i=0; i<myArray.length; i++) {
+        if (myArray[i]) returnArray.push(myArray[i])
+    }
+    return returnArray
+}
+
+function loop(start, test, update, body) {
+    if (test(start)) {
+        body(start)
+        start = update(start)
+        loop(start, test, update, body)
+    }
+}
+
+var test = function(n) {return n>0}
+
+var update = function(n) {return n-1}
